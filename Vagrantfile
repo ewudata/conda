@@ -28,6 +28,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.cpus = "4"
   end
 
+  yum install epel-release -y
+  yum install httpd mod_wsgi -y
+  yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+  yum install -y python36u python36u-libs python36u-devel python36u-pip
+  mkdir /opt/djangoproject
+  cd /opt/djangoproject
+  virtualenv djangoprojectenv
+  source djangoprojectenv/bin/activate
+  pip install django
+  django-admin --version
+
   # config.vm.provision "shell", inline: <<-SHELL
   #   # sudo yum -y groupinstall "GNOME Desktop"
   #   # sudo systemctl set-default graphical.target
