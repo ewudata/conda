@@ -19,9 +19,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "bento/centos-7.5"
   config.vm.hostname = "conda"
   config.vm.network "forwarded_port", guest: 8888, host: 8888
+  #  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", :mount_options => ["dmode=777","fmode=777"]
+  # config.vm.network "private_network", ip: "192.168.99.100"
+
   config.vm.provider "virtualbox" do |v|
     v.linked_clone = true
-    v.memory = "2048"
+    v.memory = "1024"
     v.cpus = "4"
   end
 
@@ -30,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   # sudo systemctl set-default graphical.target
   #   # sudo systemctl start graphical.target
   # SHELL
-  config.vm.provision "shell", inline: $conda_installation,  privileged: false
+  # config.vm.provision "shell", inline: $conda_installation,  privileged: false
   
   # config.vm.provision "shell", run: "always", inline: <<-SHELL
   #   su -c 'jupyter notebook --notebook-dir=/vagrant/notebook --no-browser --ip=0.0.0.0 &' - vagrant
