@@ -18,7 +18,7 @@ SCRIPT
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "bento/centos-7.5"
   config.vm.hostname = "conda"
-  config.vm.network "forwarded_port", guest: 8888, host: 8888
+  # config.vm.network "forwarded_port", guest: 8888, host: 8888
   #  config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", :mount_options => ["dmode=777","fmode=777"]
   # config.vm.network "private_network", ip: "192.168.99.100"
 
@@ -28,22 +28,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.cpus = "4"
   end
 
-  yum install epel-release -y
-  yum install httpd mod_wsgi -y
-  yum install -y https://centos7.iuscommunity.org/ius-release.rpm
-  yum install -y python36u python36u-libs python36u-devel python36u-pip
-  mkdir /opt/djangoproject
-  cd /opt/djangoproject
-  virtualenv djangoprojectenv
-  source djangoprojectenv/bin/activate
-  pip install django
-  django-admin --version
-
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   # sudo yum -y groupinstall "GNOME Desktop"
-  #   # sudo systemctl set-default graphical.target
-  #   # sudo systemctl start graphical.target
-  # SHELL
+  config.vm.provision "shell", inline: <<-SHELL
+    yum install epel-release -y
+    yum install httpd mod_wsgi -y
+    yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+    yum install -y python36u python36u-libs python36u-devel python36u-pip
+    pip3.6 install --upgrade pip
+    pip3.6 install virtualenv
+    mkdir /opt/djangoproject
+    cd /opt/djangoproject
+    virtualenv djenv
+    source djenv/bin/activate
+    pip3.6 install django
+    SHELL
+ 
   # config.vm.provision "shell", inline: $conda_installation,  privileged: false
   
   # config.vm.provision "shell", run: "always", inline: <<-SHELL
